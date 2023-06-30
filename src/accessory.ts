@@ -1,15 +1,15 @@
 import {
-  AccessoryConfig,
-  AccessoryPlugin,
-  API,
-  CharacteristicEventTypes,
-  CharacteristicGetCallback,
-  CharacteristicSetCallback,
-  CharacteristicValue,
-  HAP,
-  Logging,
-  Service
- } from "homebridge";
+    AccessoryConfig,
+    AccessoryPlugin,
+    API,
+    CharacteristicEventTypes,
+    CharacteristicGetCallback,
+    CharacteristicSetCallback,
+    CharacteristicValue,
+    HAP,
+    Logging,
+    Service
+} from "homebridge";
 
 import { SerialPort } from 'serialport';
 import Readline from '@serialport/parser-readline';
@@ -42,69 +42,67 @@ let hap: HAP;
  * Initializer function called when the plugin is loaded.
  */
 export = (api: API) => {
-  hap = api.hap;
-  api.registerAccessory("SerialPortMotionSensorAccessory", SerialPortMotionSensorAccessory);
+    hap = api.hap;
+    api.registerAccessory("SerialPortMotionSensorAccessory", SerialPortMotionSensorAccessory);
 };
 
-class SerialPortMotionSensorAccessory implements AccessoryPlugin{
+class SerialPortMotionSensorAccessory implements AccessoryPlugin {
 
-  private readonly log: Logging;
-  private readonly name: string;
+    private readonly log: Logging;
+    private readonly name: string;
 
-  config: AccessoryConfig;
-  api: API;
-  Service: any;
-  Characteristic: any;
-  service: any;
- // service: any;
- // Service: any;
-  currentValue: boolean = false;
-  port: any;
-  serialPortName: string = "";
+    config: AccessoryConfig;
+    api: API;
+    Service: any;
+    Characteristic: any;
+    service: any;
+    // service: any;
+    // Service: any;
+    currentValue: boolean = false;
+    port: any;
+    serialPortName: string = "";
 
-  constructor(log: Logging, config: AccessoryConfig, api: API) {
-    this.log = log;
-    this.config = config;
-    this.api = api;
+    constructor(log: Logging, config: AccessoryConfig, api: API) {
+        this.log = log;
+        this.config = config;
+        this.api = api;
 
-    this.Service = this.api.hap.Service;
-    
-    this.name = config.name;
+        this.Service = this.api.hap.Service;
 
-    this.serialPortName = config.serialPort;
+        this.name = config.name;
 
-    this.service = new this.Service(this.Service.MotionSensor);
+        this.serialPortName = config.serialPort;
 
-    this.service.getCharacteristic(this.Characteristic.MotionDetected)
-    .onGet(this.handleMotionDetectedGet.bind(this))
+        this.service = new this.Service(this.Service.MotionSensor);
 
-    this.port = new SerialPort({ path: serialPortName, baudRate: 115200 })
-    const parser = this.port.pipe(new ReadlineParser({ delimiter: '\n' }));
-		parser.on('data', (data:any) => {
-			if (data == "1")
-      {
-        this.currentValue = true;
-      }
-      else
-      {
-        this.currentValue = false;
-      }
-		})
+        this.service.getCharacteristic(this.Characteristic.MotionDetected)
+            .onGet(this.handleMotionDetectedGet.bind(this))
 
-    
-  }
+        this.port = new SerialPort({ path: this.serialPortName, baudRate: 115200 })
+        const parser = this.port.pipe(new ReadlineParser({ delimiter: '\n' }));
+        parser.on('data', (data: any) => {
+            if (data == "1") {
+                this.currentValue = true;
+            }
+            else {
+                this.currentValue = false;
+            }
+        })
 
-  getServices(): Service[] {
-    return [
-      this.service
-    ];
-  }
+
+    }
+
+    getServices(): Service[] {
+        return [
+            this.service
+        ];
+    }
     /**
    * Handle requests to get the current value of the "Motion Detected" characteristic
    */
     handleMotionDetectedGet() {
-      this.log.debug('Triggered GET MotionDetected');
-  
-      return this.currentValue;
+        this.log.debug('Triggered GET MotionDetected');
+
+        return this.currentValue;
     }
 }
