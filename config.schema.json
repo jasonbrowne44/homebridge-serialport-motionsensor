@@ -1,0 +1,22 @@
+{
+  "pluginAlias": "SerialPortMotionSensorAccessory",
+  "pluginType": "platform",
+  "headerDisplay": "Header",
+  "footerDisplay": "Footer",
+  "singular": true,
+  "schema": {
+    "type": "object",
+    "properties": {
+      "serialPort": {
+        "title": "Serial Port Name",
+        "type": "string",
+        "required": true,
+        "min length": 1
+  },
+  "layout":[
+        {
+            "key": "serialPort",
+            "items": [
+                "serialPort"
+    ]
+}

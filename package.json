@@ -1,0 +1,53 @@
+{
+  "name": "homebridge-serialport-motionsensor",
+  "version": "0.0.1",
+  "description": "Homebridge plugin for simple serial port based security sensor.",
+  "main": "dist/accessory.js",
+  "scripts": {
+    "clean": "rimraf ./dist",
+    "build": "rimraf ./dist && tsc",
+    "prepublishOnly": "npm run build",
+    "postpublish": "npm run clean",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "authors": [
+    "Jason Browne jbrowne44@msn.com",
+    "(template) Andreas Bauer <mail@anderl-bauer.de>"
+  ],
+  "engines": {
+    "homebridge": ">=1.0.0"
+  },
+  "license": "MIT",
+  "files": [
+    "LICENSE",
+    "package.json",
+    "package-lock.json",
+    "tsconfig.json",
+    "config.schema.json",
+    "README.md",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jasonbrowne44/homebridge-serialport-motionsensor"
+  },
+  "keywords": [
+    "Homebridge",
+    "Security System",
+    "Home Automation",
+    "homebridge plugin"
+  ],
+  "bugs": {
+    "url": "https://github.com/jasonbrowne44/homebridge-serialport-motionsensor/issues"
+  },
+  "devDependencies": {
+    "@types/node": "16.11.7",
+    "homebridge": "^1.6.1",
+    "rimraf": "^5.0.0",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "glob": "^10.3.1",
+    "serialport": "^10.4.0"
+  }
+}
