@@ -80,8 +80,8 @@ class SerialPortMotionSensorAccessory implements AccessoryPlugin{
 
     this.port = new SerialPort({ path: serialPortName, baudRate: 115200 })
     const parser = this.port.pipe(new ReadlineParser({ delimiter: '\n' }));
-		parser.on('data', (data:any) => {
-			if (data == "1")
+    parser.on('data', (data:any) => {
+	if (data == "1")
       {
         this.currentValue = true;
       }
