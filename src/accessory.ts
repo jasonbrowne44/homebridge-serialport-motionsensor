@@ -60,6 +60,7 @@ class SerialPortMotionSensorAccessory implements AccessoryPlugin{
  // Service: any;
   currentValue: boolean = false;
   port: any;
+  serialPortName: string = "";
 
   constructor(log: Logging, config: AccessoryConfig, api: API) {
     this.log = log;
@@ -70,12 +71,14 @@ class SerialPortMotionSensorAccessory implements AccessoryPlugin{
     
     this.name = config.name;
 
+    this.serialPortName = config.serialPort;
+
     this.service = new this.Service(this.Service.MotionSensor);
 
     this.service.getCharacteristic(this.Characteristic.MotionDetected)
     .onGet(this.handleMotionDetectedGet.bind(this))
 
-    this.port = new SerialPort({ path: '/dev/ttyACM0', baudRate: 115200 })
+    this.port = new SerialPort({ path: serialPortName, baudRate: 115200 })
     const parser = this.port.pipe(new ReadlineParser({ delimiter: '\n' }));
 		parser.on('data', (data:any) => {
 			if (data == "1")
