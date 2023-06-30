@@ -43,7 +43,7 @@ let hap: HAP;
  */
 export = (api: API) => {
   hap = api.hap;
-  api.registerAccessory("SerialMotionSensor", SerialPortMotionSensorAccessory);
+  api.registerAccessory("SerialPortMotionSensorAccessory", SerialPortMotionSensorAccessory);
 };
 
 class SerialPortMotionSensorAccessory implements AccessoryPlugin{
@@ -51,7 +51,6 @@ class SerialPortMotionSensorAccessory implements AccessoryPlugin{
   private readonly log: Logging;
   private readonly name: string;
 
-  private readonly motionDetectionService: Service;
   config: AccessoryConfig;
   api: API;
   Service: any;
@@ -68,7 +67,6 @@ class SerialPortMotionSensorAccessory implements AccessoryPlugin{
     this.api = api;
 
     this.Service = this.api.hap.Service;
-    this.Characteristic = this.api.hap.Characteristic;
     
     this.name = config.name;
 
@@ -90,8 +88,14 @@ class SerialPortMotionSensorAccessory implements AccessoryPlugin{
       }
 		})
 
+    
   }
 
+  getServices(): Service[] {
+    return [
+      this.service
+    ];
+  }
     /**
    * Handle requests to get the current value of the "Motion Detected" characteristic
    */
